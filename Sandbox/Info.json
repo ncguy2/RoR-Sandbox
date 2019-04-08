@@ -1,0 +1,7 @@
+{
+  "Id": "Sandbox",
+  "DisplayName": "Sandbox",
+  "Version": "1.0.0",
+  "EntryMethod": "Sandbox.SandboxMain.Load",
+  "AssemblyName": "Sandbox.dll"
+}
