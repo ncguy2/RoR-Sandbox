@@ -27,13 +27,13 @@ namespace Sandbox.Command {
             string[] nearbyNames = DataUtils.SelectEnum(id, out T idx);
 
             if (nearbyNames != null) {
-                Chat.AddMessage("Unable to find  ID: " + id);
+                SandboxMain.toHud("Unable to find  ID: " + id);
 
                 // ReSharper disable once InvertIf
                 if (nearbyNames.Length > 0) {
-                    Chat.AddMessage("Did you mean:");
+                    SandboxMain.toHud("Did you mean:");
                     foreach (string t in nearbyNames) {
-                        Chat.AddMessage("    " + t);
+                        SandboxMain.toHud("    " + t);
                     }
                 }
 
@@ -54,18 +54,19 @@ namespace Sandbox.Command {
 
         public override void invoke_server(Dictionary<string, string> contents) {
             if (!int.TryParse(contents["Id"], out int idx)) {
-                SandboxMain.Log($"Invalid  ID \"{contents["Id"]}\" Replicated");
+                SandboxMain.Log($"Invalid  ID \"{contents["Id"]}\" Replicated", true);
                 return;
             }
 
             if (!int.TryParse(contents["Amount"], out int amt)) {
-                SandboxMain.Log($"Invalid amount \"{contents["Amount"]}\" Replicated, overriding to 1");
+                SandboxMain.Log($"Invalid amount \"{contents["Amount"]}\" Replicated, overriding to 1", true);
                 amt = 1;
             }
 
             if (!DataUtils.ReadVector3FromDictionary("Location", ref contents, out Vector3 hit)) {
                 SandboxMain.Log(
-                    $"Invalid location \"[{contents["Location.x"]}, {contents["Location.y"]}, {contents["Location.z"]}] Replicated");
+                    $"Invalid location \"[{contents["Location.x"]}, {contents["Location.y"]}, {contents["Location.z"]}] Replicated",
+                    true);
                 return;
             }
 

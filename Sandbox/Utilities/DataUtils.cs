@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using RoR2;
 using UnityEngine;
 
 namespace Sandbox.Utilities {
@@ -30,7 +29,6 @@ namespace Sandbox.Utilities {
 
             string[] arr = new string[amt];
 
-            Chat.AddMessage("Did you mean:");
             for (int i = 0; i < amt; i++) {
                 arr[i] = tuples[i].Item1;
             }

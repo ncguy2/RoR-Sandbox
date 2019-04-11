@@ -32,13 +32,14 @@ namespace Sandbox.Command {
             string spawnCard = contents["SpawnCard"];
             if (!DataUtils.ReadVector3FromDictionary("Location", ref contents, out Vector3 hit)) {
                 SandboxMain.Log(
-                    $"Invalid location \"[{contents["Location.x"]}, {contents["Location.y"]}, {contents["Location.z"]}] Replicated");
+                    $"Invalid location \"[{contents["Location.x"]}, {contents["Location.y"]}, {contents["Location.z"]}] Replicated",
+                    true);
                 return;
             }
 
             SpawnCard card = Resources.Load<SpawnCard>("SpawnCards/" + spawnCard);
             if (card == null) {
-                SandboxMain.Log($"Unable to load a spawnCard called \"{spawnCard}\"");
+                SandboxMain.Log($"Unable to load a spawnCard called \"{spawnCard}\"", true);
                 return;
             }
 

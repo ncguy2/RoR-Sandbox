@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Sandbox.UI {
     public class HUDContainer : MonoBehaviour {
-
         private List<Line> lines;
 
         public HUDContainer() {
@@ -29,13 +26,10 @@ namespace Sandbox.UI {
                 return;
             }
 
-            Rect safeArea = Screen.safeArea;
+            Vector2 size = new Vector2(384f, Screen.height / 3f);
+            float y = Screen.height * 0.25f;
 
-            Vector2 size = new Vector2(384f, safeArea.y / 3f);
-            float y = safeArea.y * 0.25f + size.y;
-
-            Rect rect = new Rect(safeArea.x - size.x, y, size.x, size.y);
-
+            Rect rect = new Rect(Screen.width - (size.x + 10), y, size.x, size.y);
             GUILayout.BeginArea(rect);
 
             GUILayout.BeginVertical();
@@ -56,11 +50,11 @@ namespace Sandbox.UI {
         private class Line {
             public float lifeRemaining;
             public string text;
+
             public Line(float lifeRemaining, string text) {
                 this.lifeRemaining = lifeRemaining;
                 this.text = text;
             }
         }
-
     }
 }

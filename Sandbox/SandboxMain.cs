@@ -120,8 +120,14 @@ namespace Sandbox {
             return true;
         }
 
-        public static void Log(string msg) {
+        public static void Log(string msg, bool logToHud = false) {
             Mod.Logger.Log(msg);
+            if (logToHud) {
+                toHud(msg);
+            }
+        }
+
+        public static void toHud(string msg) {
             hudContainer.Add(msg);
         }
     }

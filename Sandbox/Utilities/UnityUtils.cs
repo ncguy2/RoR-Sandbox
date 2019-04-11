@@ -6,7 +6,7 @@ namespace Sandbox.Utilities {
             Camera camera = Camera.main;
 
             if (camera == null) {
-                SandboxMain.Log("Unable to find camera reference.");
+                SandboxMain.Log("Unable to find camera reference.", true);
                 hit = new RaycastHit();
                 return false;
             }
@@ -21,7 +21,7 @@ namespace Sandbox.Utilities {
                 return true;
             }
 
-            SandboxMain.Log("Unable to find spawn location.");
+            SandboxMain.Log("Unable to find trace location.", true);
             return false;
         }
     }

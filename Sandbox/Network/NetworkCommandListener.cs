@@ -20,12 +20,12 @@ namespace Sandbox.Network {
         public void replicate(CommandPacket pkt) {
             NetworkClient client = NetworkManager.singleton.client;
             if (client == null) {
-                SandboxMain.Log("NetworkManager.singleton.client is null");
+                SandboxMain.Log("NetworkManager.singleton.client is null", true);
                 return;
             }
 
             if (!client.Send(CommandPacketType, pkt)) {
-                SandboxMain.Log($"Failed to replicate command {pkt.cmdKey}");
+                SandboxMain.Log($"Failed to replicate command {pkt.cmdKey}", true);
             }
         }
 
