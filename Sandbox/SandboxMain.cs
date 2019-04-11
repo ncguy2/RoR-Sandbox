@@ -1,7 +1,9 @@
 ﻿using System;
 using Harmony;
+using RoR2;
 using Sandbox.Command;
 using Sandbox.Network;
+using Sandbox.UI;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityModManagerNet;
@@ -15,6 +17,7 @@ namespace Sandbox {
         private static float timeout = 0;
         private static string lastCmd = null;
         private static bool previousServerState = false;
+        private static HUDContainer hudContainer;
 
         public static UnityModManager.ModEntry Mod { get; private set; }
         public static CommandHandler CmdHandler { get; private set; }
@@ -33,6 +36,10 @@ namespace Sandbox {
             harmony.PatchAll();
 
             Console.onLogReceived += ChatOnChatChanged;
+
+            GameObject gameObject = new GameObject();
+            gameObject.AddComponent<SetDontDestroyOnLoad>();
+            hudContainer = gameObject.AddComponent<HUDContainer>();
         }
 
         private static void OnGui(UnityModManager.ModEntry obj) {
@@ -115,6 +122,7 @@ namespace Sandbox {
 
         public static void Log(string msg) {
             Mod.Logger.Log(msg);
+            hudContainer.Add(msg);
         }
     }
 }

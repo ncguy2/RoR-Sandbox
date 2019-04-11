@@ -73,6 +73,7 @@
     <Compile Include="Command\SpawnEquipment.cs" />
       <Compile Include="Command\SpawnFromEnumCommand.cs"/>
     <Compile Include="Command\SpawnItem.cs" />
+      <Compile Include="GUI\HUDContainer.cs"/>
       <Compile Include="Network\NetworkCommandListener.cs"/>
     <Compile Include="Overrides\ItemSharing.cs" />
     <Compile Include="SandboxMain.cs" />
