@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using RoR2.ConVar;
-using Sandbox.Command;
 
-namespace Sandbox {
+namespace Sandbox.Command {
     public class CommandHandler {
         private readonly List<ICommand> commands;
 
@@ -21,20 +19,22 @@ namespace Sandbox {
             Tuple<string, IEnumerable<string>> cmd = splitCommand(commandLine);
 
             ICommand command = getCommand(cmd.Item1);
+            command?.invoke(cmd.Item2);
+        }
 
-            if (command == null) {
-                return;
-            }
+        public ICommand getCommand(string cmd) {
+            return commands.First(x => x.key().Equals(cmd, StringComparison.OrdinalIgnoreCase));
+        }
 
-            Dictionary<string, object> conVars = new Dictionary<string, object>();
-            command.parseArguments(cmd.Item2, ref conVars);
-            command.invoke(conVars);
+        public IEnumerable<ICommand> getCommands() {
+            return commands;
         }
 
         private void registerDefaultCommands() {
             registerCommand(new AmbushCommand());
             registerCommand(new HelpCommand());
             registerCommand(new SetShared());
+            registerCommand(new SpawnEnemy());
             registerCommand(new SpawnEquipment());
             registerCommand(new SpawnItem());
         }
@@ -47,19 +47,9 @@ namespace Sandbox {
         private IEnumerable<T> separateArgs<T>(T[] input, int startIdx) {
             T[] arr = new T[input.Length - startIdx];
 
-            for (int i = startIdx, j = 0; i < input.Length; i++, j++) {
-                arr[j] = input[i];
-            }
+            for (int i = startIdx, j = 0; i < input.Length; i++, j++) arr[j] = input[i];
 
             return arr;
-        }
-
-        private ICommand getCommand(string cmd) {
-            return commands.First(x => x.key().Equals(cmd, StringComparison.OrdinalIgnoreCase));
-        }
-
-        public List<ICommand> getCommands() {
-            return commands;
         }
     }
 }

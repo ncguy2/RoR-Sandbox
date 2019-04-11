@@ -2,13 +2,24 @@ using System;
 
 namespace Sandbox.Utilities {
     public static class DamerauLevenshtein {
-        public static int CalculateDistance(string source, string target, int threshold=5) {
+        public static int CalculateDistance(string source, string target, bool caseSensitive, int threshold = 5) {
+            if (!caseSensitive) {
+                source = source.ToLowerInvariant();
+                target = target.ToLowerInvariant();
+            }
+
+            // Return trivial case - strings are equal
+            if (source == target) {
+                return 0;
+            }
 
             int length1 = source.Length;
             int length2 = target.Length;
 
-            // Return trivial case - difference in string lengths exceeds threshhold
-            if (Math.Abs(length1 - length2) > threshold) { return int.MaxValue; }
+            // Return trivial case - difference in string lengths exceeds threshold
+            if (Math.Abs(length1 - length2) > threshold) {
+                return int.MaxValue;
+            }
 
             // Ensure arrays [i] / length1 use shorter length
             if (length1 > length2) {
@@ -22,16 +33,16 @@ namespace Sandbox.Utilities {
             int[] dCurrent = new int[maxi + 1];
             int[] dMinus1 = new int[maxi + 1];
             int[] dMinus2 = new int[maxi + 1];
-            int[] dSwap;
 
-            for (int i = 0; i <= maxi; i++) { dCurrent[i] = i; }
+            for (int i = 0; i <= maxi; i++) {
+                dCurrent[i] = i;
+            }
 
-            int jm1 = 0, im1 = 0, im2 = -1;
+            int jm1 = 0;
 
             for (int j = 1; j <= maxj; j++) {
-
                 // Rotate
-                dSwap = dMinus2;
+                int[] dSwap = dMinus2;
                 dMinus2 = dMinus1;
                 dMinus1 = dCurrent;
                 dCurrent = dSwap;
@@ -39,11 +50,10 @@ namespace Sandbox.Utilities {
                 // Initialize
                 int minDistance = int.MaxValue;
                 dCurrent[0] = j;
-                im1 = 0;
-                im2 = -1;
+                int im1 = 0;
+                int im2 = -1;
 
                 for (int i = 1; i <= maxi; i++) {
-
                     int cost = source[im1] == target[jm1] ? 0 : 1;
 
                     int del = dCurrent[im1] + 1;
@@ -57,23 +67,28 @@ namespace Sandbox.Utilities {
                         min = Math.Min(min, dMinus2[im2] + cost);
 
                     dCurrent[i] = min;
-                    if (min < minDistance) { minDistance = min; }
+                    if (min < minDistance) {
+                        minDistance = min;
+                    }
+
                     im1++;
                     im2++;
                 }
+
                 jm1++;
-                if (minDistance > threshold) { return int.MaxValue; }
+                if (minDistance > threshold) {
+                    return int.MaxValue;
+                }
             }
 
             int result = dCurrent[maxi];
             return result > threshold ? int.MaxValue : result;
         }
 
-        private static void Swap<T>(ref T arg1,ref T arg2) {
+        private static void Swap<T>(ref T arg1, ref T arg2) {
             T temp = arg1;
             arg1 = arg2;
             arg2 = temp;
         }
-
     }
 }

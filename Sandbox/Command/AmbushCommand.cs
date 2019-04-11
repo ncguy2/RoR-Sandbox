@@ -1,36 +1,39 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using JetBrains.Annotations;
 using PingFixer;
 using RoR2;
-using Sandbox.Utilities;
-using UnityEngine;
+using UnityEngine.Networking;
 using Object = UnityEngine.Object;
-using Random = UnityEngine.Random;
 
 namespace Sandbox.Command {
     public class AmbushCommand : ICommand {
-        public string key() {
+        public override string key() {
             return "ambush";
         }
 
-        public void parseArguments(IEnumerable<string> arguments, ref Dictionary<string, object> conVars) {
+        public override void parseArguments(IEnumerable<string> arguments, ref Dictionary<string, object> conVars) {
             string[] argStrings = arguments.ToArray();
             conVars.Add("Player name", argStrings[0]);
         }
 
-        public void invoke(Dictionary<string, object> conVars) {
+        public override PreparedResult prepare(Dictionary<string, object> conVars,
+                                               ref Dictionary<string, string> packetContents) {
+            string victimName = conVars["Player name"] as string;
+            packetContents.Add("Player name", victimName);
+            return string.IsNullOrEmpty(victimName) ? PreparedResult.Stop : PreparedResult.Replicate;
+        }
+
+        [Server]
+        public override void invoke_server(Dictionary<string, string> contents) {
             CombatDirector director = getDirector();
             if (director == null) {
                 Chat.AddMessage("No Combat Director found, cannot force ambush");
                 return;
             }
 
-            string victimName = conVars["Player name"] as string;
-
-            if (victimName == null) {
+            if (!(contents["Player name"] is string victimName)) {
                 Chat.AddMessage("No player name provided");
                 return;
             }
@@ -38,10 +41,12 @@ namespace Sandbox.Command {
             PlayerCharacterMasterController victim = null;
 
             foreach (PlayerCharacterMasterController playerController in PlayerCharacterMasterController.instances) {
-                if (victimName.Equals(playerController.networkUser.userName, StringComparison.OrdinalIgnoreCase)) {
-                    victim = playerController;
-                    break;
+                if (!victimName.Equals(playerController.networkUser.userName, StringComparison.OrdinalIgnoreCase)) {
+                    continue;
                 }
+
+                victim = playerController;
+                break;
             }
 
             if (victim == null) {
@@ -50,7 +55,6 @@ namespace Sandbox.Command {
             }
 
             director.InvokePrivateMethod("GenerateAmbush", victim.transform.position);
-
         }
 
         [CanBeNull]

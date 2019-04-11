@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Harmony;
-using RoR2;
 using Sandbox.Command;
+using Sandbox.Network;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityModManagerNet;
@@ -14,11 +12,13 @@ namespace Sandbox {
     public class SandboxMain {
         private static HarmonyInstance harmony;
 
-        public static UnityModManager.ModEntry Mod { get; private set; }
-        public static CommandHandler CmdHandler { get; private set; }
-
         private static float timeout = 0;
         private static string lastCmd = null;
+        private static bool previousServerState = false;
+
+        public static UnityModManager.ModEntry Mod { get; private set; }
+        public static CommandHandler CmdHandler { get; private set; }
+        public static NetworkCommandListener NetHandler { get; private set; }
 
         public static void Load(UnityModManager.ModEntry entry) {
             Mod = entry;
@@ -27,6 +27,7 @@ namespace Sandbox {
             entry.OnGUI = OnGui;
 
             CmdHandler = new CommandHandler();
+            NetHandler = new NetworkCommandListener();
 
             harmony = HarmonyInstance.Create(entry.Info.Id);
             harmony.PatchAll();
@@ -42,6 +43,16 @@ namespace Sandbox {
         }
 
         private static void OnUpdate(UnityModManager.ModEntry arg1, float delta) {
+            if (NetworkServer.active != previousServerState) {
+                if (NetworkServer.active) {
+                    NetHandler.start();
+                } else {
+                    NetHandler.stop();
+                }
+
+                previousServerState = NetworkServer.active;
+            }
+
             if (timeout < 0) {
                 return;
             }
@@ -65,6 +76,7 @@ namespace Sandbox {
             while (cmd.Contains("<noparse>")) {
                 cmd = cmd.Replace("<noparse>", "");
             }
+
             while (cmd.Contains("</noparse>")) {
                 cmd = cmd.Replace("</noparse>", "");
             }
@@ -99,6 +111,10 @@ namespace Sandbox {
             Console.onLogReceived -= ChatOnChatChanged;
             harmony.UnpatchAll();
             return true;
+        }
+
+        public static void Log(string msg) {
+            Mod.Logger.Log(msg);
         }
     }
 }

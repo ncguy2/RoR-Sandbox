@@ -69,13 +69,18 @@
     <Compile Include="Command\HelpCommand.cs" />
     <Compile Include="Command\ICommand.cs" />
     <Compile Include="Command\SetShared.cs" />
+      <Compile Include="Command\SpawnEnemy.cs"/>
     <Compile Include="Command\SpawnEquipment.cs" />
+      <Compile Include="Command\SpawnFromEnumCommand.cs"/>
     <Compile Include="Command\SpawnItem.cs" />
+      <Compile Include="Network\NetworkCommandListener.cs"/>
     <Compile Include="Overrides\ItemSharing.cs" />
     <Compile Include="SandboxMain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\DamerauLevenshtein.cs" />
+      <Compile Include="Utilities\DataUtils.cs"/>
     <Compile Include="Utilities\ReflectionUtil.cs" />
+      <Compile Include="Utilities\UnityUtils.cs"/>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
