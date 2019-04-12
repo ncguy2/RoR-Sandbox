@@ -65,15 +65,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Command\AmbushCommand.cs" />
+      <Compile Include="Command\Attribute\SandboxCommandAttribute.cs"/>
     <Compile Include="Command\CommandHandler.cs" />
-      <Compile Include="Command\GiveItem.cs"/>
+      <Compile Include="Command\GiveCommand.cs"/>
     <Compile Include="Command\HelpCommand.cs" />
     <Compile Include="Command\ICommand.cs" />
-    <Compile Include="Command\SetShared.cs" />
-      <Compile Include="Command\SpawnEnemy.cs"/>
-    <Compile Include="Command\SpawnEquipment.cs" />
+      <Compile Include="Command\RemoveItemCommand.cs"/>
+      <Compile Include="Command\SetSharedCommand.cs"/>
+      <Compile Include="Command\SpawnEnemyCommand.cs"/>
+      <Compile Include="Command\SpawnEquipmentCommand.cs"/>
       <Compile Include="Command\SpawnFromEnumCommand.cs"/>
-    <Compile Include="Command\SpawnItem.cs" />
+      <Compile Include="Command\SpawnItemCommand.cs"/>
       <Compile Include="UI\HUDContainer.cs"/>
       <Compile Include="Network\NetworkCommandListener.cs"/>
     <Compile Include="Overrides\ItemSharing.cs" />

@@ -4,10 +4,12 @@ using System.Linq;
 using JetBrains.Annotations;
 using PingFixer;
 using RoR2;
+using Sandbox.Command.Attribute;
 using UnityEngine.Networking;
 using Object = UnityEngine.Object;
 
 namespace Sandbox.Command {
+    [SandboxCommand(true)]
     public class AmbushCommand : Command {
         public override string key() {
             return "ambush";

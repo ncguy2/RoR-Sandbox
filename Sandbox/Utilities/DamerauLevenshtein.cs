@@ -2,8 +2,8 @@ using System;
 
 namespace Sandbox.Utilities {
     public static class DamerauLevenshtein {
-        public static int CalculateDistance(string source, string target, bool caseSensitive, int threshold = 5) {
-            if (!caseSensitive) {
+        public static int CalculateDistance(string source, string target, bool ignoreCase, int threshold = 5) {
+            if (ignoreCase) {
                 source = source.ToLowerInvariant();
                 target = target.ToLowerInvariant();
             }

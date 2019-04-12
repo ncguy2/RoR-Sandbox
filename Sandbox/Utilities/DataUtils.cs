@@ -6,19 +6,23 @@ using UnityEngine;
 
 namespace Sandbox.Utilities {
     public static class DataUtils {
-        public static string[] SelectEnum<T>(string query, out T result, int maxNearby = 3, bool caseSensitive = false,
+        public static string[] SelectEnum<T>(string query,
+                                             out T result,
+                                             int maxNearby = 3,
+                                             bool ignoreCase = true,
                                              T defVal = default(T))
             where T : struct {
-            if (Enum.TryParse(query, out result)) {
+            if (Enum.TryParse(query, ignoreCase, out result)) {
                 return null;
             }
-            // result = defVal;
+
+            result = defVal;
 
             List<Tuple<string, int>> tuples = Enum.GetNames(typeof(T))
                                                   .Select(x => new Tuple<string, int>(
                                                               x,
                                                               DamerauLevenshtein.CalculateDistance(
-                                                                  x, query, caseSensitive)))
+                                                                  x, query, ignoreCase)))
                                                   .Where(x => x.Item2 < 5)
                                                   .ToList();
             tuples.Sort((a, b) => a.Item2.CompareTo(b.Item2));

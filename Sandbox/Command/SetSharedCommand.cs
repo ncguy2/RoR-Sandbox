@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using RoR2;
+using Sandbox.Command.Attribute;
 using UnityEngine.Networking;
 
 namespace Sandbox.Command {
-    public class SetShared : Command {
+    [SandboxCommand(true)]
+    public class SetSharedCommand : Command {
         public static bool itemsShared = false;
 
         public override string key() {
@@ -29,7 +31,11 @@ namespace Sandbox.Command {
 
         [Server]
         public override void invoke_server(Dictionary<string, string> contents) {
-            bool.TryParse(contents["Share"], out itemsShared);
+            if (!bool.TryParse(contents["Share"], out bool result)) {
+                result = !itemsShared;
+            }
+
+            itemsShared = result;
             Chat.AddMessage(itemsShared ? "Item pickups are now shared" : "Item pickups are no longer shared");
         }
     }

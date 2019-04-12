@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using RoR2;
+using Sandbox.Command.Attribute;
 using Sandbox.Utilities;
 using UnityEngine;
 
 namespace Sandbox.Command {
-    public class SpawnEnemy : Command {
+    [SandboxCommand(true)]
+    public class SpawnEnemyCommand : Command {
         public override string key() {
             return "spawnEnemy";
         }

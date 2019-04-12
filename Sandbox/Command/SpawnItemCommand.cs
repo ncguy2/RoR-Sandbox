@@ -1,7 +1,9 @@
 using RoR2;
+using Sandbox.Command.Attribute;
 
 namespace Sandbox.Command {
-    public class SpawnItem : SpawnFromEnumCommand<ItemIndex> {
+    [SandboxCommand]
+    public class SpawnItemCommand : SpawnFromEnumCommand<ItemIndex> {
         public override string key() {
             return "spawnItem";
         }
@@ -16,6 +18,10 @@ namespace Sandbox.Command {
 
         protected override ItemIndex getDefault() {
             return ItemIndex.None;
+        }
+
+        protected override bool areEqual(ItemIndex a, ItemIndex b) {
+            return a == b;
         }
     }
 }

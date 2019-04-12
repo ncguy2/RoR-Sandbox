@@ -31,6 +31,13 @@ namespace Sandbox.Command {
 
         [Server]
         public abstract void invoke_server(Dictionary<string, string> contents);
+
+        protected void preparePassthrough(Dictionary<string, object> conVars,
+                                          ref Dictionary<string, string> packetContents) {
+            foreach (KeyValuePair<string, object> pair in conVars) {
+                packetContents.Add(pair.Key, pair.Value.ToString());
+            }
+        }
     }
 
     public enum PreparedResult {

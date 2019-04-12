@@ -9,7 +9,7 @@ namespace Sandbox.Overrides {
         // ReSharper disable once InconsistentNaming
         // ReSharper disable once UnusedParameter.Local
         private static void Postfix(CharacterBody body, Inventory inventory, GenericPickupController __instance) {
-            if (!SetShared.itemsShared) {
+            if (!SetSharedCommand.itemsShared) {
                 return;
             }
 

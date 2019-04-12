@@ -26,7 +26,7 @@ namespace Sandbox.Command {
             string id = conVars["Id"].ToString();
             string[] nearbyNames = DataUtils.SelectEnum(id, out T idx, 3, false, getDefault());
 
-            if (toInteger(idx) == -1) {
+            if (areEqual(idx, getDefault())) {
                 SandboxMain.toHud("Unable to find  ID: " + id);
 
                 // ReSharper disable once InvertIf
@@ -81,5 +81,6 @@ namespace Sandbox.Command {
         protected abstract int toInteger(T obj);
         protected abstract PickupIndex makeIndex(int idx);
         protected abstract T getDefault();
+        protected abstract bool areEqual(T a, T b);
     }
 }

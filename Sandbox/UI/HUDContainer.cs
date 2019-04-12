@@ -26,7 +26,7 @@ namespace Sandbox.UI {
                 return;
             }
 
-            Vector2 size = new Vector2(384f, Screen.height / 3f);
+            Vector2 size = new Vector2(384f, Screen.height / 1.5f);
             float y = Screen.height * 0.25f;
 
             Rect rect = new Rect(Screen.width - (size.x + 10), y, size.x, size.y);

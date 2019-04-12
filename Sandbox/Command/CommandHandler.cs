@@ -37,11 +37,13 @@ namespace Sandbox.Command {
 
         private void registerDefaultCommands() {
             registerCommand(new AmbushCommand());
+            registerCommand(new GiveCommand());
             registerCommand(new HelpCommand());
-            registerCommand(new SetShared());
-            registerCommand(new SpawnEnemy());
-            registerCommand(new SpawnEquipment());
-            registerCommand(new SpawnItem());
+            registerCommand(new RemoveItemCommand());
+            registerCommand(new SetSharedCommand());
+            registerCommand(new SpawnEnemyCommand());
+            registerCommand(new SpawnEquipmentCommand());
+            registerCommand(new SpawnItemCommand());
         }
 
         private Tuple<string, IEnumerable<string>> splitCommand(string commandLine) {

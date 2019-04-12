@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using Sandbox.Command.Attribute;
 
 namespace Sandbox.Command {
+    [SandboxCommand]
     public class HelpCommand : Command {
         public override string key() {
             return "help";

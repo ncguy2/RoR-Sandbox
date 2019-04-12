@@ -40,12 +40,39 @@ namespace Sandbox.Utilities {
         public static PlayerCharacterMasterController GetPlayerController(
             Predicate<PlayerCharacterMasterController> filter) {
             foreach (PlayerCharacterMasterController ctrlr in PlayerCharacterMasterController.instances) {
+                SandboxMain.debug($"Player controller: {ctrlr.GetDisplayName()}, isLocal: {ctrlr.isLocalPlayer}");
                 if (filter(ctrlr)) {
                     return ctrlr;
                 }
             }
 
             return null;
+        }
+
+        public static NetworkUser GetNetworkUser(Predicate<NetworkUser> filter) {
+            foreach (NetworkUser user in NetworkUser.readOnlyLocalPlayersList) {
+                if (filter(user)) {
+                    return user;
+                }
+            }
+
+            return null;
+        }
+
+        public static NetworkUser GetNetworkUserWithName(string name) {
+            return GetNetworkUser(x => GetNetworkUserName(x).Equals(name));
+        }
+
+        public static NetworkUser GetLocalNetworkUser() {
+            return GetNetworkUser(x => x.isLocalPlayer);
+        }
+
+        public static string GetLocalNetworkUserName() {
+            return GetNetworkUserName(GetLocalNetworkUser());
+        }
+
+        public static string GetNetworkUserName(NetworkUser user) {
+            return user.userName;
         }
     }
 }

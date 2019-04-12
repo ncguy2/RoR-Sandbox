@@ -75,10 +75,14 @@ namespace Sandbox {
             debug(cmd);
 
             if (!getDisplayNameFromLine(cmd, out string name)) {
+                debug($"Unable to find name from command");
                 return;
             }
 
-            if (!UnityUtils.GetLocalPlayerController().GetDisplayName().Equals(name)) {
+            debug("Fetching local player");
+            string localPlayerName = UnityUtils.GetLocalNetworkUserName();
+            debug($"Local Player: {localPlayerName}, invoker: {name}");
+            if (!localPlayerName.Equals(name)) {
                 return;
             }
 
@@ -124,15 +128,21 @@ namespace Sandbox {
         public static bool getDisplayNameFromLine(string line, out string displayName) {
             // ReSharper disable once StringLiteralTypo
             if (line.Contains("noparse")) {
+                debug($"Potential command: {line}");
                 Regex rx = new Regex(@"<noparse>([^<]*)</noparse>", RegexOptions.Compiled | RegexOptions.IgnoreCase);
                 MatchCollection matches = rx.Matches(line);
 
                 if (matches.Count >= 1) {
+                    debug("Match found");
                     Match match = matches[0];
+                    debug($"Groups: {match.Groups.Count}");
                     Group group = match.Groups[1];
+                    debug($"Group: {group.Value}");
                     displayName = group.Value;
                     return true;
                 }
+
+                debug("No matches");
             }
 
             displayName = "";
