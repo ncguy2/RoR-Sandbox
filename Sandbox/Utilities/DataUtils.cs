@@ -10,9 +10,9 @@ namespace Sandbox.Utilities {
                                              T defVal = default(T))
             where T : struct {
             if (Enum.TryParse(query, out result)) {
-                result = defVal;
                 return null;
             }
+            // result = defVal;
 
             List<Tuple<string, int>> tuples = Enum.GetNames(typeof(T))
                                                   .Select(x => new Tuple<string, int>(
