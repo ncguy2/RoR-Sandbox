@@ -24,7 +24,11 @@ namespace Sandbox.Command {
         }
 
         public Command getCommand(string cmd) {
-            return commands.First(x => x.Key.Equals(cmd, StringComparison.OrdinalIgnoreCase));
+            try {
+                return commands.First(x => x.Key.Equals(cmd, StringComparison.OrdinalIgnoreCase));
+            } catch (Exception e) {
+                return null;
+            }
         }
 
         public IEnumerable<Command> getCommands() {

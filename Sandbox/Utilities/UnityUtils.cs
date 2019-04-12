@@ -31,6 +31,11 @@ namespace Sandbox.Utilities {
             return GetPlayerController(x => x.isLocalPlayer);
         }
 
+        public static PlayerCharacterMasterController GetPlayerControllerByDisplayName(string name) {
+            return GetPlayerController(
+                x => x.GetDisplayName().Equals(name, StringComparison.InvariantCultureIgnoreCase));
+        }
+
         // ReSharper disable once MemberCanBePrivate.Global
         public static PlayerCharacterMasterController GetPlayerController(
             Predicate<PlayerCharacterMasterController> filter) {
