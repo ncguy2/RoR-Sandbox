@@ -4,29 +4,30 @@ using System.Linq;
 
 namespace Sandbox.Command {
     public class CommandHandler {
-        private readonly List<ICommand> commands;
+        private readonly List<Command> commands;
 
         public CommandHandler() {
-            commands = new List<ICommand>();
+            commands = new List<Command>();
             registerDefaultCommands();
         }
 
-        public void registerCommand(ICommand command) {
+        // ReSharper disable once MemberCanBePrivate.Global
+        public void registerCommand(Command command) {
             commands.Add(command);
         }
 
         public void invokeCommand(string commandLine) {
             Tuple<string, IEnumerable<string>> cmd = splitCommand(commandLine);
 
-            ICommand command = getCommand(cmd.Item1);
+            Command command = getCommand(cmd.Item1);
             command?.invoke(cmd.Item2);
         }
 
-        public ICommand getCommand(string cmd) {
-            return commands.First(x => x.key().Equals(cmd, StringComparison.OrdinalIgnoreCase));
+        public Command getCommand(string cmd) {
+            return commands.First(x => x.Key.Equals(cmd, StringComparison.OrdinalIgnoreCase));
         }
 
-        public IEnumerable<ICommand> getCommands() {
+        public IEnumerable<Command> getCommands() {
             return commands;
         }
 

@@ -5,8 +5,8 @@ using Sandbox.Utilities;
 using UnityEngine;
 
 namespace Sandbox.Command {
-    public abstract class SpawnFromEnumCommand<T> : ICommand where T : struct {
-        public override void parseArguments(IEnumerable<string> arguments, ref Dictionary<string, object> conVars) {
+    public abstract class SpawnFromEnumCommand<T> : Command where T : struct {
+        protected override void parseArguments(IEnumerable<string> arguments, ref Dictionary<string, object> conVars) {
             string[] argStrings = arguments.ToArray();
             conVars.Add("Id", argStrings[0]);
 
@@ -24,9 +24,9 @@ namespace Sandbox.Command {
             }
 
             string id = conVars["Id"].ToString();
-            string[] nearbyNames = DataUtils.SelectEnum(id, out T idx);
+            string[] nearbyNames = DataUtils.SelectEnum(id, out T idx, 3, false, getDefault());
 
-            if (nearbyNames != null) {
+            if (toInteger(idx) == -1) {
                 SandboxMain.toHud("Unable to find  ID: " + id);
 
                 // ReSharper disable once InvertIf
@@ -80,5 +80,6 @@ namespace Sandbox.Command {
 
         protected abstract int toInteger(T obj);
         protected abstract PickupIndex makeIndex(int idx);
+        protected abstract T getDefault();
     }
 }

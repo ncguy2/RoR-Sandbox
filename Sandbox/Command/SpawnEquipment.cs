@@ -13,5 +13,9 @@ namespace Sandbox.Command {
         protected override PickupIndex makeIndex(int idx) {
             return new PickupIndex((EquipmentIndex) idx);
         }
+
+        protected override EquipmentIndex getDefault() {
+            return EquipmentIndex.None;
+        }
     }
 }

@@ -6,9 +6,11 @@ using UnityEngine;
 
 namespace Sandbox.Utilities {
     public static class DataUtils {
-        public static string[] SelectEnum<T>(string query, out T result, int maxNearby = 3, bool caseSensitive = false)
+        public static string[] SelectEnum<T>(string query, out T result, int maxNearby = 3, bool caseSensitive = false,
+                                             T defVal = default(T))
             where T : struct {
             if (Enum.TryParse(query, out result)) {
+                result = defVal;
                 return null;
             }
 

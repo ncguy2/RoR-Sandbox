@@ -1,3 +1,5 @@
+using System;
+using RoR2;
 using UnityEngine;
 
 namespace Sandbox.Utilities {
@@ -23,6 +25,22 @@ namespace Sandbox.Utilities {
 
             SandboxMain.Log("Unable to find trace location.", true);
             return false;
+        }
+
+        public static PlayerCharacterMasterController GetLocalPlayerController() {
+            return GetPlayerController(x => x.isLocalPlayer);
+        }
+
+        // ReSharper disable once MemberCanBePrivate.Global
+        public static PlayerCharacterMasterController GetPlayerController(
+            Predicate<PlayerCharacterMasterController> filter) {
+            foreach (PlayerCharacterMasterController ctrlr in PlayerCharacterMasterController.instances) {
+                if (filter(ctrlr)) {
+                    return ctrlr;
+                }
+            }
+
+            return null;
         }
     }
 }

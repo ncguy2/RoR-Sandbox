@@ -2,27 +2,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Sandbox.UI {
-    public class HUDContainer : MonoBehaviour {
-        private List<Line> lines;
+    public class HudContainer : MonoBehaviour {
+        private readonly List<Line> _lines;
 
-        public HUDContainer() {
-            lines = new List<Line>();
+        public HudContainer() {
+            _lines = new List<Line>();
         }
 
         public void Add(string line) {
-            lines.Add(new Line(5, line));
+            _lines.Add(new Line(5, line));
         }
 
         private void LateUpdate() {
-            foreach (Line line in lines) {
-                line.lifeRemaining -= Time.deltaTime;
+            foreach (Line line in _lines) {
+                line.LifeRemaining -= Time.deltaTime;
             }
 
-            lines.RemoveAll(isLineDead);
+            _lines.RemoveAll(isLineDead);
         }
 
         private void OnGUI() {
-            if (lines.Count == 0) {
+            if (_lines.Count == 0) {
                 return;
             }
 
@@ -34,8 +34,8 @@ namespace Sandbox.UI {
 
             GUILayout.BeginVertical();
 
-            foreach (Line line in lines) {
-                GUILayout.Label(line.text);
+            foreach (Line line in _lines) {
+                GUILayout.Label(line.Text);
             }
 
             GUILayout.EndVertical();
@@ -43,18 +43,19 @@ namespace Sandbox.UI {
             GUILayout.EndArea();
         }
 
-        private bool isLineDead(Line line) {
-            return line.lifeRemaining <= 0;
+        private static bool isLineDead(Line line) {
+            return line.LifeRemaining <= 0;
         }
 
         private class Line {
-            public float lifeRemaining;
-            public string text;
+            public readonly string Text;
 
             public Line(float lifeRemaining, string text) {
-                this.lifeRemaining = lifeRemaining;
-                this.text = text;
+                LifeRemaining = lifeRemaining;
+                Text = text;
             }
+
+            public float LifeRemaining { get; set; }
         }
     }
 }

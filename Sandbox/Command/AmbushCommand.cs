@@ -8,12 +8,12 @@ using UnityEngine.Networking;
 using Object = UnityEngine.Object;
 
 namespace Sandbox.Command {
-    public class AmbushCommand : ICommand {
+    public class AmbushCommand : Command {
         public override string key() {
             return "ambush";
         }
 
-        public override void parseArguments(IEnumerable<string> arguments, ref Dictionary<string, object> conVars) {
+        protected override void parseArguments(IEnumerable<string> arguments, ref Dictionary<string, object> conVars) {
             string[] argStrings = arguments.ToArray();
             conVars.Add("Player name", argStrings[0]);
         }

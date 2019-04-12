@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine.Networking;
 
 namespace Sandbox.Command {
-    public abstract class ICommand {
+    public abstract class Command {
         public string Key => key();
 
         public void invoke(IEnumerable<string> arguments) {
@@ -17,13 +17,13 @@ namespace Sandbox.Command {
                 SandboxMain.Log($"Invoking command \"{Key}\" on server");
                 invoke_server(pkt.contents);
             } else {
-                SandboxMain.NetHandler.replicate(pkt);
+                SandboxMain.NetHandler.Replicate(pkt);
             }
         }
 
         public abstract string key();
 
-        public abstract void parseArguments(IEnumerable<string> arguments, ref Dictionary<string, object> conVars);
+        protected abstract void parseArguments(IEnumerable<string> arguments, ref Dictionary<string, object> conVars);
 
         [Client]
         public abstract PreparedResult prepare(Dictionary<string, object> conVars,

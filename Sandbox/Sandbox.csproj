@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Command\AmbushCommand.cs" />
     <Compile Include="Command\CommandHandler.cs" />
+      <Compile Include="Command\GiveItem.cs"/>
     <Compile Include="Command\HelpCommand.cs" />
     <Compile Include="Command\ICommand.cs" />
     <Compile Include="Command\SetShared.cs" />
@@ -73,7 +74,7 @@
     <Compile Include="Command\SpawnEquipment.cs" />
       <Compile Include="Command\SpawnFromEnumCommand.cs"/>
     <Compile Include="Command\SpawnItem.cs" />
-      <Compile Include="GUI\HUDContainer.cs"/>
+      <Compile Include="UI\HUDContainer.cs"/>
       <Compile Include="Network\NetworkCommandListener.cs"/>
     <Compile Include="Overrides\ItemSharing.cs" />
     <Compile Include="SandboxMain.cs" />

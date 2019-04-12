@@ -17,7 +17,7 @@ namespace Sandbox {
         private static float timeout = 0;
         private static string lastCmd = null;
         private static bool previousServerState = false;
-        private static HUDContainer hudContainer;
+        private static HudContainer hudContainer;
 
         public static UnityModManager.ModEntry Mod { get; private set; }
         public static CommandHandler CmdHandler { get; private set; }
@@ -39,12 +39,12 @@ namespace Sandbox {
 
             GameObject gameObject = new GameObject();
             gameObject.AddComponent<SetDontDestroyOnLoad>();
-            hudContainer = gameObject.AddComponent<HUDContainer>();
+            hudContainer = gameObject.AddComponent<HudContainer>();
         }
 
         private static void OnGui(UnityModManager.ModEntry obj) {
             GUILayout.Label("Registered commands: ");
-            foreach (ICommand cmd in CmdHandler.getCommands()) {
+            foreach (Command.Command cmd in CmdHandler.getCommands()) {
                 GUILayout.Label("    " + cmd.key());
             }
         }
@@ -52,9 +52,9 @@ namespace Sandbox {
         private static void OnUpdate(UnityModManager.ModEntry arg1, float delta) {
             if (NetworkServer.active != previousServerState) {
                 if (NetworkServer.active) {
-                    NetHandler.start();
+                    NetHandler.Start();
                 } else {
-                    NetHandler.stop();
+                    NetHandler.Stop();
                 }
 
                 previousServerState = NetworkServer.active;

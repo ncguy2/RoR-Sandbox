@@ -4,14 +4,14 @@ using RoR2;
 using UnityEngine.Networking;
 
 namespace Sandbox.Command {
-    public class SetShared : ICommand {
+    public class SetShared : Command {
         public static bool itemsShared = false;
 
         public override string key() {
             return "SetShared";
         }
 
-        public override void parseArguments(IEnumerable<string> arguments, ref Dictionary<string, object> conVars) {
+        protected override void parseArguments(IEnumerable<string> arguments, ref Dictionary<string, object> conVars) {
             string[] argStrings = arguments.ToArray();
             if (argStrings.Length >= 1) {
                 conVars.Add("Share", bool.TryParse(argStrings[0], out bool shared) ? shared : !itemsShared);

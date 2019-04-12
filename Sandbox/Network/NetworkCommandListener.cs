@@ -5,19 +5,21 @@ namespace Sandbox.Network {
     public class NetworkCommandListener {
         private const short CommandPacketType = 0x4000;
 
-        public void start() {
+        public void Start() {
             SandboxMain.Log("NetworkCommandListener starting");
             NetworkServer.RegisterHandler(CommandPacketType, handlePacket);
             SandboxMain.Log("NetworkCommandListener started");
         }
 
-        public void stop() {
+        // ReSharper disable once MemberCanBeMadeStatic.Global
+        public void Stop() {
             SandboxMain.Log("NetworkCommandListener stopping");
             NetworkServer.UnregisterHandler(CommandPacketType);
             SandboxMain.Log("NetworkCommandListener stopped");
         }
 
-        public void replicate(CommandPacket pkt) {
+        // ReSharper disable once MemberCanBeMadeStatic.Global
+        public void Replicate(CommandPacket pkt) {
             NetworkClient client = NetworkManager.singleton.client;
             if (client == null) {
                 SandboxMain.Log("NetworkManager.singleton.client is null", true);
@@ -38,8 +40,9 @@ namespace Sandbox.Network {
             invoke(pkt);
         }
 
+        // ReSharper disable once MemberCanBeMadeStatic.Global
         private void invoke(CommandPacket cmdPacket) {
-            ICommand cmd = SandboxMain.CmdHandler.getCommand(cmdPacket.cmdKey);
+            Command.Command cmd = SandboxMain.CmdHandler.getCommand(cmdPacket.cmdKey);
             cmd?.invoke_server(cmdPacket.contents);
         }
     }

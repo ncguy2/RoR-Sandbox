@@ -6,13 +6,16 @@ namespace Sandbox.Command {
             return "spawnItem";
         }
 
-
         protected override int toInteger(ItemIndex obj) {
             return (int) obj;
         }
 
         protected override PickupIndex makeIndex(int idx) {
             return new PickupIndex((ItemIndex) idx);
+        }
+
+        protected override ItemIndex getDefault() {
+            return ItemIndex.None;
         }
     }
 }

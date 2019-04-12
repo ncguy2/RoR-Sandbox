@@ -5,12 +5,12 @@ using Sandbox.Utilities;
 using UnityEngine;
 
 namespace Sandbox.Command {
-    public class SpawnEnemy : ICommand {
+    public class SpawnEnemy : Command {
         public override string key() {
             return "spawnEnemy";
         }
 
-        public override void parseArguments(IEnumerable<string> arguments, ref Dictionary<string, object> conVars) {
+        protected override void parseArguments(IEnumerable<string> arguments, ref Dictionary<string, object> conVars) {
             string[] argStrings = arguments.ToArray();
             conVars.Add("SpawnCard", argStrings[0]);
         }

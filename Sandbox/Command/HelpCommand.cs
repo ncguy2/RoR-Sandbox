@@ -1,16 +1,17 @@
 using System.Collections.Generic;
 
 namespace Sandbox.Command {
-    public class HelpCommand : ICommand {
+    public class HelpCommand : Command {
         public override string key() {
             return "help";
         }
 
-        public override void parseArguments(IEnumerable<string> arguments, ref Dictionary<string, object> conVars) { }
+        protected override void
+            parseArguments(IEnumerable<string> arguments, ref Dictionary<string, object> conVars) { }
 
         public override PreparedResult prepare(Dictionary<string, object> conVars,
                                                ref Dictionary<string, string> packetContents) {
-            foreach (ICommand cmd in SandboxMain.CmdHandler.getCommands()) {
+            foreach (Command cmd in SandboxMain.CmdHandler.getCommands()) {
                 SandboxMain.toHud(" -- " + cmd.key());
             }
 
