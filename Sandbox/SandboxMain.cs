@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using Harmony;
 using RoR2;
 using Sandbox.Command;
 using Sandbox.Network;
 using Sandbox.UI;
+using Sandbox.Utilities;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityModManagerNet;
@@ -52,9 +54,9 @@ namespace Sandbox {
         private static void OnUpdate(UnityModManager.ModEntry arg1, float delta) {
             if (NetworkServer.active != previousServerState) {
                 if (NetworkServer.active) {
-                    NetHandler.Start();
+                    NetHandler.StartServer();
                 } else {
-                    NetHandler.Stop();
+                    NetHandler.StopServer();
                 }
 
                 previousServerState = NetworkServer.active;
@@ -70,13 +72,17 @@ namespace Sandbox {
 
         private static void ChatOnChatChanged(Console.Log log) {
             string cmd = log.message;
+            debug(cmd);
 
-            if (cmd.Contains("ChatChanged")) {
+            if (!getDisplayNameFromLine(cmd, out string name)) {
                 return;
             }
 
-            if (NetworkServer.active) {
-                Mod.Logger.Log("[Server] Chat command invoked on server");
+            if (!UnityUtils.GetLocalPlayerController().GetDisplayName().Equals(name)) {
+                return;
+            }
+
+            if (cmd.Contains("ChatChanged")) {
                 return;
             }
 
@@ -107,11 +113,30 @@ namespace Sandbox {
             }
 
             Mod.Logger.Log($"[ChatChanged] [{log.logType}] {cmd} (LastCmd: {lastCmd}");
+            debug(cmd);
 
             lastCmd = cmd;
             timeout = .5f;
 
             CmdHandler.invokeCommand(cmd);
+        }
+
+        public static bool getDisplayNameFromLine(string line, out string displayName) {
+            // ReSharper disable once StringLiteralTypo
+            if (line.Contains("noparse")) {
+                Regex rx = new Regex(@"<noparse>([^<]*)</noparse>", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                MatchCollection matches = rx.Matches(line);
+
+                if (matches.Count >= 1) {
+                    Match match = matches[0];
+                    Group group = match.Groups[1];
+                    displayName = group.Value;
+                    return true;
+                }
+            }
+
+            displayName = "";
+            return false;
         }
 
         private static bool Unload(UnityModManager.ModEntry arg) {
@@ -129,6 +154,12 @@ namespace Sandbox {
 
         public static void toHud(string msg) {
             hudContainer.Add(msg);
+        }
+
+        public static void debug(string msg) {
+            #if DEBUG
+            toHud(msg);
+            #endif
         }
     }
 }

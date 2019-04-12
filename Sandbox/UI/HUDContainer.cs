@@ -30,6 +30,9 @@ namespace Sandbox.UI {
             float y = Screen.height * 0.25f;
 
             Rect rect = new Rect(Screen.width - (size.x + 10), y, size.x, size.y);
+
+            GUI.Box(rect, "");
+
             GUILayout.BeginArea(rect);
 
             GUILayout.BeginVertical();

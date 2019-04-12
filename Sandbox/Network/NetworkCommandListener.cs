@@ -5,14 +5,14 @@ namespace Sandbox.Network {
     public class NetworkCommandListener {
         private const short CommandPacketType = 0x4000;
 
-        public void Start() {
+        public void StartServer() {
             SandboxMain.Log("NetworkCommandListener starting");
             NetworkServer.RegisterHandler(CommandPacketType, handlePacket);
             SandboxMain.Log("NetworkCommandListener started");
         }
 
         // ReSharper disable once MemberCanBeMadeStatic.Global
-        public void Stop() {
+        public void StopServer() {
             SandboxMain.Log("NetworkCommandListener stopping");
             NetworkServer.UnregisterHandler(CommandPacketType);
             SandboxMain.Log("NetworkCommandListener stopped");

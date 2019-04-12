@@ -26,7 +26,7 @@ namespace Sandbox.Command {
         public Command getCommand(string cmd) {
             try {
                 return commands.First(x => x.Key.Equals(cmd, StringComparison.OrdinalIgnoreCase));
-            } catch (Exception e) {
+            } catch (Exception) {
                 return null;
             }
         }
