@@ -75,11 +75,6 @@ namespace Sandbox {
                 return;
             }
 
-            if (!NetworkServer.active) {
-                Mod.Logger.Log("[Server] Chat command invoked on client");
-                return;
-            }
-
             while (cmd.Contains("<noparse>")) {
                 cmd = cmd.Replace("<noparse>", "");
             }
