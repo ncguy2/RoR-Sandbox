@@ -69,7 +69,7 @@
     <Compile Include="Command\CommandHandler.cs" />
       <Compile Include="Command\GiveCommand.cs"/>
     <Compile Include="Command\HelpCommand.cs" />
-    <Compile Include="Command\ICommand.cs" />
+      <Compile Include="Command\Command.cs"/>
       <Compile Include="Command\RemoveItemCommand.cs"/>
       <Compile Include="Command\SetSharedCommand.cs"/>
       <Compile Include="Command\SpawnEnemyCommand.cs"/>

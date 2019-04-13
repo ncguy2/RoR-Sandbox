@@ -5,7 +5,7 @@ using Sandbox.Command.Attribute;
 using UnityEngine.Networking;
 
 namespace Sandbox.Command {
-    [SandboxCommand(true)]
+    [SandboxCommand]
     public class SetSharedCommand : Command {
         public static bool itemsShared = false;
 
@@ -22,8 +22,8 @@ namespace Sandbox.Command {
             }
         }
 
-        public override PreparedResult prepare(Dictionary<string, object> conVars,
-                                               ref Dictionary<string, string> packetContents) {
+        protected override PreparedResult prepare(Dictionary<string, object> conVars,
+                                                  ref Dictionary<string, string> packetContents) {
             bool.TryParse(conVars["Share"] as string, out bool result);
             packetContents.Add("Share", result.ToString());
             return PreparedResult.Replicate;

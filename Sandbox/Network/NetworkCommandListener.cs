@@ -7,7 +7,7 @@ namespace Sandbox.Network {
 
         public void StartServer() {
             SandboxMain.Log("NetworkCommandListener starting");
-            NetworkServer.RegisterHandler(CommandPacketType, handlePacket);
+            NetworkServer.RegisterHandler(CommandPacketType, HandlePacket);
             SandboxMain.Log("NetworkCommandListener started");
         }
 
@@ -31,17 +31,17 @@ namespace Sandbox.Network {
             }
         }
 
-        private void handlePacket(NetworkMessage msg) {
+        private void HandlePacket(NetworkMessage msg) {
             if (msg.msgType != CommandPacketType) {
                 return;
             }
 
             CommandPacket pkt = msg.ReadMessage<CommandPacket>();
-            invoke(pkt);
+            Invoke(pkt);
         }
 
-        // ReSharper disable once MemberCanBeMadeStatic.Global
-        private void invoke(CommandPacket cmdPacket) {
+        // ReSharper disable once MemberCanBeMadeStatic.Local
+        private void Invoke(CommandPacket cmdPacket) {
             Command.Command cmd = SandboxMain.CmdHandler.getCommand(cmdPacket.cmdKey);
             cmd?.invoke_server(cmdPacket.contents);
         }

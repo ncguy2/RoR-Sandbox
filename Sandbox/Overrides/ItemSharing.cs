@@ -5,6 +5,7 @@ using Sandbox.Command;
 namespace Sandbox.Overrides {
     [HarmonyPatch(typeof(GenericPickupController))]
     [HarmonyPatch("GrantItem")]
+    // ReSharper disable once UnusedMember.Global
     public class ItemSharing {
         // ReSharper disable once InconsistentNaming
         // ReSharper disable once UnusedParameter.Local

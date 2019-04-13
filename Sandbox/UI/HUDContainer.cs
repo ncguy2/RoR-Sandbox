@@ -18,9 +18,10 @@ namespace Sandbox.UI {
                 line.LifeRemaining -= Time.deltaTime;
             }
 
-            _lines.RemoveAll(isLineDead);
+            _lines.RemoveAll(IsLineDead);
         }
 
+        // ReSharper disable once InconsistentNaming
         private void OnGUI() {
             if (_lines.Count == 0) {
                 return;
@@ -46,7 +47,7 @@ namespace Sandbox.UI {
             GUILayout.EndArea();
         }
 
-        private static bool isLineDead(Line line) {
+        private static bool IsLineDead(Line line) {
             return line.LifeRemaining <= 0;
         }
 

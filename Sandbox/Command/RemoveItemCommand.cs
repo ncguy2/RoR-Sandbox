@@ -6,7 +6,7 @@ using Sandbox.Command.Attribute;
 using Sandbox.Utilities;
 
 namespace Sandbox.Command {
-    [SandboxCommand(true)]
+    [SandboxCommand]
     public class RemoveItemCommand : Command {
         public override string key() {
             return "removeItem";
@@ -30,8 +30,8 @@ namespace Sandbox.Command {
             conVars.Add("Amount", amt);
         }
 
-        public override PreparedResult prepare(Dictionary<string, object> conVars,
-                                               ref Dictionary<string, string> packetContents) {
+        protected override PreparedResult prepare(Dictionary<string, object> conVars,
+                                                  ref Dictionary<string, string> packetContents) {
             preparePassthrough(conVars, ref packetContents);
             return PreparedResult.Replicate;
         }

@@ -21,6 +21,7 @@ namespace Sandbox {
         private static bool previousServerState = false;
         private static HudContainer hudContainer;
 
+        // ReSharper disable once MemberCanBePrivate.Global
         public static UnityModManager.ModEntry Mod { get; private set; }
         public static CommandHandler CmdHandler { get; private set; }
         public static NetworkCommandListener NetHandler { get; private set; }
@@ -74,7 +75,7 @@ namespace Sandbox {
             string cmd = log.message;
             debug(cmd);
 
-            if (!getDisplayNameFromLine(cmd, out string name)) {
+            if (!GetDisplayNameFromLine(cmd, out string name)) {
                 debug($"Unable to find name from command");
                 return;
             }
@@ -125,7 +126,7 @@ namespace Sandbox {
             CmdHandler.invokeCommand(cmd);
         }
 
-        public static bool getDisplayNameFromLine(string line, out string displayName) {
+        private static bool GetDisplayNameFromLine(string line, out string displayName) {
             // ReSharper disable once StringLiteralTypo
             if (line.Contains("noparse")) {
                 debug($"Potential command: {line}");

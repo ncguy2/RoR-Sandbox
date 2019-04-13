@@ -17,8 +17,8 @@ namespace Sandbox.Command {
             }
         }
 
-        public override PreparedResult prepare(Dictionary<string, object> conVars,
-                                               ref Dictionary<string, string> packetContents) {
+        protected override PreparedResult prepare(Dictionary<string, object> conVars,
+                                                  ref Dictionary<string, string> packetContents) {
             if (!UnityUtils.RayTrace(out RaycastHit hit)) {
                 return PreparedResult.Stop;
             }

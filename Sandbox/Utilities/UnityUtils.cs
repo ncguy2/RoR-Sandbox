@@ -49,6 +49,7 @@ namespace Sandbox.Utilities {
             return null;
         }
 
+        // ReSharper disable once MemberCanBePrivate.Global
         public static NetworkUser GetNetworkUser(Predicate<NetworkUser> filter) {
             foreach (NetworkUser user in NetworkUser.readOnlyLocalPlayersList) {
                 if (filter(user)) {
@@ -63,6 +64,7 @@ namespace Sandbox.Utilities {
             return GetNetworkUser(x => GetNetworkUserName(x).Equals(name));
         }
 
+        // ReSharper disable once MemberCanBePrivate.Global
         public static NetworkUser GetLocalNetworkUser() {
             return GetNetworkUser(x => x.isLocalPlayer);
         }
@@ -71,6 +73,7 @@ namespace Sandbox.Utilities {
             return GetNetworkUserName(GetLocalNetworkUser());
         }
 
+        // ReSharper disable once MemberCanBePrivate.Global
         public static string GetNetworkUserName(NetworkUser user) {
             return user.userName;
         }

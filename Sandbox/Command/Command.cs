@@ -26,8 +26,8 @@ namespace Sandbox.Command {
         protected abstract void parseArguments(IEnumerable<string> arguments, ref Dictionary<string, object> conVars);
 
         [Client]
-        public abstract PreparedResult prepare(Dictionary<string, object> conVars,
-                                               ref Dictionary<string, string> packetContents);
+        protected abstract PreparedResult prepare(Dictionary<string, object> conVars,
+                                                  ref Dictionary<string, string> packetContents);
 
         [Server]
         public abstract void invoke_server(Dictionary<string, string> contents);

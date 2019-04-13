@@ -9,7 +9,7 @@ using UnityEngine.Networking;
 using Object = UnityEngine.Object;
 
 namespace Sandbox.Command {
-    [SandboxCommand(true)]
+    [SandboxCommand]
     public class AmbushCommand : Command {
         public override string key() {
             return "ambush";
@@ -20,8 +20,8 @@ namespace Sandbox.Command {
             conVars.Add("Player name", argStrings[0]);
         }
 
-        public override PreparedResult prepare(Dictionary<string, object> conVars,
-                                               ref Dictionary<string, string> packetContents) {
+        protected override PreparedResult prepare(Dictionary<string, object> conVars,
+                                                  ref Dictionary<string, string> packetContents) {
             string victimName = conVars["Player name"] as string;
             packetContents.Add("Player name", victimName);
             return string.IsNullOrEmpty(victimName) ? PreparedResult.Stop : PreparedResult.Replicate;

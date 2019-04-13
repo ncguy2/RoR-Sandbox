@@ -6,7 +6,7 @@ using Sandbox.Utilities;
 using UnityEngine;
 
 namespace Sandbox.Command {
-    [SandboxCommand(true)]
+    [SandboxCommand]
     public class SpawnEnemyCommand : Command {
         public override string key() {
             return "spawnEnemy";
@@ -18,8 +18,8 @@ namespace Sandbox.Command {
         }
 
 
-        public override PreparedResult prepare(Dictionary<string, object> conVars,
-                                               ref Dictionary<string, string> packetContents) {
+        protected override PreparedResult prepare(Dictionary<string, object> conVars,
+                                                  ref Dictionary<string, string> packetContents) {
             if (!UnityUtils.RayTrace(out RaycastHit hit)) {
                 return PreparedResult.Stop;
             }

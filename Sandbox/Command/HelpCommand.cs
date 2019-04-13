@@ -11,8 +11,8 @@ namespace Sandbox.Command {
         protected override void
             parseArguments(IEnumerable<string> arguments, ref Dictionary<string, object> conVars) { }
 
-        public override PreparedResult prepare(Dictionary<string, object> conVars,
-                                               ref Dictionary<string, string> packetContents) {
+        protected override PreparedResult prepare(Dictionary<string, object> conVars,
+                                                  ref Dictionary<string, string> packetContents) {
             foreach (Command cmd in SandboxMain.CmdHandler.getCommands()) {
                 SandboxMain.toHud(" -- " + cmd.key());
             }
