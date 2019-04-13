@@ -5,6 +5,7 @@ using UnityEngine;
 // ReSharper disable UnusedMember.Local
 
 namespace Sandbox.UI {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class HudContainer : MonoBehaviour {
         private readonly List<Line> _lines;
 
