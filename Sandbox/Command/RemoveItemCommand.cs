@@ -8,11 +8,11 @@ using Sandbox.Utilities;
 namespace Sandbox.Command {
     [SandboxCommand]
     public class RemoveItemCommand : Command {
-        public override string key() {
+        public override string Key() {
             return "removeItem";
         }
 
-        protected override void parseArguments(IEnumerable<string> arguments, ref Dictionary<string, object> conVars) {
+        protected override void ParseArguments(IEnumerable<string> arguments, ref Dictionary<string, object> conVars) {
             string[] argStrings = arguments.ToArray();
             string displayName = UnityUtils.GetLocalNetworkUserName();
             string id = argStrings[0];
@@ -30,13 +30,13 @@ namespace Sandbox.Command {
             conVars.Add("Amount", amt);
         }
 
-        protected override PreparedResult prepare(Dictionary<string, object> conVars,
+        protected override PreparedResult Prepare(Dictionary<string, object> conVars,
                                                   ref Dictionary<string, string> packetContents) {
-            preparePassthrough(conVars, ref packetContents);
+            PreparePassthrough(conVars, ref packetContents);
             return PreparedResult.Replicate;
         }
 
-        public override void invoke_server(Dictionary<string, string> contents) {
+        public override void InvokeServer(Dictionary<string, string> contents) {
             string username = contents["Target"];
             string idStr = contents["Id"];
             string amtStr = contents["Amount"];

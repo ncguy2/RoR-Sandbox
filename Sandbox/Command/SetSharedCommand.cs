@@ -7,22 +7,22 @@ using UnityEngine.Networking;
 namespace Sandbox.Command {
     [SandboxCommand]
     public class SetSharedCommand : Command {
-        public static bool itemsShared = false;
+        public static bool ItemsShared;
 
-        public override string key() {
+        public override string Key() {
             return "SetShared";
         }
 
-        protected override void parseArguments(IEnumerable<string> arguments, ref Dictionary<string, object> conVars) {
+        protected override void ParseArguments(IEnumerable<string> arguments, ref Dictionary<string, object> conVars) {
             string[] argStrings = arguments.ToArray();
             if (argStrings.Length >= 1) {
-                conVars.Add("Share", bool.TryParse(argStrings[0], out bool shared) ? shared : !itemsShared);
+                conVars.Add("Share", bool.TryParse(argStrings[0], out bool shared) ? shared : !ItemsShared);
             } else {
-                conVars.Add("Share", !itemsShared);
+                conVars.Add("Share", !ItemsShared);
             }
         }
 
-        protected override PreparedResult prepare(Dictionary<string, object> conVars,
+        protected override PreparedResult Prepare(Dictionary<string, object> conVars,
                                                   ref Dictionary<string, string> packetContents) {
             bool.TryParse(conVars["Share"] as string, out bool result);
             packetContents.Add("Share", result.ToString());
@@ -30,13 +30,13 @@ namespace Sandbox.Command {
         }
 
         [Server]
-        public override void invoke_server(Dictionary<string, string> contents) {
+        public override void InvokeServer(Dictionary<string, string> contents) {
             if (!bool.TryParse(contents["Share"], out bool result)) {
-                result = !itemsShared;
+                result = !ItemsShared;
             }
 
-            itemsShared = result;
-            Chat.AddMessage(itemsShared ? "Item pickups are now shared" : "Item pickups are no longer shared");
+            ItemsShared = result;
+            Chat.AddMessage(ItemsShared ? "Item pickups are now shared" : "Item pickups are no longer shared");
         }
     }
 }

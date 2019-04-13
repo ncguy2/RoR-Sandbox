@@ -27,7 +27,7 @@ namespace Sandbox.Network {
             }
 
             if (!client.Send(CommandPacketType, pkt)) {
-                SandboxMain.Log($"Failed to replicate command {pkt.cmdKey}", true);
+                SandboxMain.Log($"Failed to replicate command {pkt.CmdKey}", true);
             }
         }
 
@@ -42,8 +42,8 @@ namespace Sandbox.Network {
 
         // ReSharper disable once MemberCanBeMadeStatic.Local
         private void Invoke(CommandPacket cmdPacket) {
-            Command.Command cmd = SandboxMain.CmdHandler.getCommand(cmdPacket.cmdKey);
-            cmd?.invoke_server(cmdPacket.contents);
+            Command.Command cmd = SandboxMain.CmdHandler.GetCommand(cmdPacket.CmdKey);
+            cmd?.InvokeServer(cmdPacket.Contents);
         }
     }
 }

@@ -4,57 +4,59 @@ using System.Linq;
 
 namespace Sandbox.Command {
     public class CommandHandler {
-        private readonly List<Command> commands;
+        private readonly List<Command> _commands;
 
         public CommandHandler() {
-            commands = new List<Command>();
-            registerDefaultCommands();
+            _commands = new List<Command>();
+            RegisterDefaultCommands();
         }
 
         // ReSharper disable once MemberCanBePrivate.Global
-        public void registerCommand(Command command) {
-            commands.Add(command);
+        public void RegisterCommand(Command command) {
+            _commands.Add(command);
         }
 
-        public void invokeCommand(string commandLine) {
-            Tuple<string, IEnumerable<string>> cmd = splitCommand(commandLine);
+        public void InvokeCommand(string commandLine) {
+            Tuple<string, IEnumerable<string>> cmd = SplitCommand(commandLine);
 
-            Command command = getCommand(cmd.Item1);
-            command?.invoke(cmd.Item2);
+            Command command = GetCommand(cmd.Item1);
+            command?.Invoke(cmd.Item2);
         }
 
-        public Command getCommand(string cmd) {
+        public Command GetCommand(string cmd) {
             try {
-                return commands.First(x => x.Key.Equals(cmd, StringComparison.OrdinalIgnoreCase));
+                return _commands.First(x => x.Key().Equals(cmd, StringComparison.OrdinalIgnoreCase));
             } catch (Exception) {
                 return null;
             }
         }
 
-        public IEnumerable<Command> getCommands() {
-            return commands;
+        public IEnumerable<Command> GetCommands() {
+            return _commands;
         }
 
-        private void registerDefaultCommands() {
-            registerCommand(new AmbushCommand());
-            registerCommand(new GiveCommand());
-            registerCommand(new HelpCommand());
-            registerCommand(new RemoveItemCommand());
-            registerCommand(new SetSharedCommand());
-            registerCommand(new SpawnEnemyCommand());
-            registerCommand(new SpawnEquipmentCommand());
-            registerCommand(new SpawnItemCommand());
+        private void RegisterDefaultCommands() {
+            RegisterCommand(new AmbushCommand());
+            RegisterCommand(new GiveCommand());
+            RegisterCommand(new HelpCommand());
+            RegisterCommand(new RemoveItemCommand());
+            RegisterCommand(new SetSharedCommand());
+            RegisterCommand(new SpawnEnemyCommand());
+            RegisterCommand(new SpawnEquipmentCommand());
+            RegisterCommand(new SpawnItemCommand());
         }
 
-        private Tuple<string, IEnumerable<string>> splitCommand(string commandLine) {
+        private static Tuple<string, IEnumerable<string>> SplitCommand(string commandLine) {
             string[] strings = commandLine.Split(' ');
-            return new Tuple<string, IEnumerable<string>>(strings[0], separateArgs(strings, 1));
+            return new Tuple<string, IEnumerable<string>>(strings[0], SeparateArgs(strings, 1));
         }
 
-        private IEnumerable<T> separateArgs<T>(T[] input, int startIdx) {
-            T[] arr = new T[input.Length - startIdx];
+        private static IEnumerable<T> SeparateArgs<T>(IReadOnlyList<T> input, int startIdx) {
+            T[] arr = new T[input.Count - startIdx];
 
-            for (int i = startIdx, j = 0; i < input.Length; i++, j++) arr[j] = input[i];
+            for (int i = startIdx, j = 0; i < input.Count; i++, j++) {
+                arr[j] = input[i];
+            }
 
             return arr;
         }

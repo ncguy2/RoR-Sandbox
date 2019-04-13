@@ -8,17 +8,17 @@ using UnityEngine;
 namespace Sandbox.Command {
     [SandboxCommand]
     public class SpawnEnemyCommand : Command {
-        public override string key() {
+        public override string Key() {
             return "spawnEnemy";
         }
 
-        protected override void parseArguments(IEnumerable<string> arguments, ref Dictionary<string, object> conVars) {
+        protected override void ParseArguments(IEnumerable<string> arguments, ref Dictionary<string, object> conVars) {
             string[] argStrings = arguments.ToArray();
             conVars.Add("SpawnCard", argStrings[0]);
         }
 
 
-        protected override PreparedResult prepare(Dictionary<string, object> conVars,
+        protected override PreparedResult Prepare(Dictionary<string, object> conVars,
                                                   ref Dictionary<string, string> packetContents) {
             if (!UnityUtils.RayTrace(out RaycastHit hit)) {
                 return PreparedResult.Stop;
@@ -30,7 +30,7 @@ namespace Sandbox.Command {
             return PreparedResult.Replicate;
         }
 
-        public override void invoke_server(Dictionary<string, string> contents) {
+        public override void InvokeServer(Dictionary<string, string> contents) {
             string spawnCard = contents["SpawnCard"];
             if (!DataUtils.ReadVector3FromDictionary("Location", ref contents, out Vector3 hit)) {
                 SandboxMain.Log(

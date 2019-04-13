@@ -2,15 +2,17 @@ using Harmony;
 using RoR2;
 using Sandbox.Command;
 
+// ReSharper disable UnusedMember.Global
+// ReSharper disable InconsistentNaming
+// ReSharper disable UnusedParameter.Local
+// ReSharper disable UnusedMember.Local
+
 namespace Sandbox.Overrides {
     [HarmonyPatch(typeof(GenericPickupController))]
     [HarmonyPatch("GrantItem")]
-    // ReSharper disable once UnusedMember.Global
     public class ItemSharing {
-        // ReSharper disable once InconsistentNaming
-        // ReSharper disable once UnusedParameter.Local
         private static void Postfix(CharacterBody body, Inventory inventory, GenericPickupController __instance) {
-            if (!SetSharedCommand.itemsShared) {
+            if (!SetSharedCommand.ItemsShared) {
                 return;
             }
 

@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
+
 namespace Sandbox.UI {
     public class HudContainer : MonoBehaviour {
         private readonly List<Line> _lines;

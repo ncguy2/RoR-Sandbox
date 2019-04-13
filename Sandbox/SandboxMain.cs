@@ -11,17 +11,19 @@ using UnityEngine.Networking;
 using UnityModManagerNet;
 using Console = RoR2.Console;
 
+// ReSharper disable UnusedMember.Global
+// ReSharper disable StringLiteralTypo
+// ReSharper disable MemberCanBePrivate.Global
+
 namespace Sandbox {
     [EnableReloading]
-    public class SandboxMain {
-        private static HarmonyInstance harmony;
+    public static class SandboxMain {
+        private static float _timeout;
+        private static string _lastCmd;
+        private static bool _previousServerState;
+        private static HudContainer _hudContainer;
+        private static HarmonyInstance _harmony;
 
-        private static float timeout = 0;
-        private static string lastCmd = null;
-        private static bool previousServerState = false;
-        private static HudContainer hudContainer;
-
-        // ReSharper disable once MemberCanBePrivate.Global
         public static UnityModManager.ModEntry Mod { get; private set; }
         public static CommandHandler CmdHandler { get; private set; }
         public static NetworkCommandListener NetHandler { get; private set; }
@@ -35,115 +37,93 @@ namespace Sandbox {
             CmdHandler = new CommandHandler();
             NetHandler = new NetworkCommandListener();
 
-            harmony = HarmonyInstance.Create(entry.Info.Id);
-            harmony.PatchAll();
+            _harmony = HarmonyInstance.Create(entry.Info.Id);
+            _harmony.PatchAll();
 
             Console.onLogReceived += ChatOnChatChanged;
 
             GameObject gameObject = new GameObject();
             gameObject.AddComponent<SetDontDestroyOnLoad>();
-            hudContainer = gameObject.AddComponent<HudContainer>();
+            _hudContainer = gameObject.AddComponent<HudContainer>();
         }
 
         private static void OnGui(UnityModManager.ModEntry obj) {
             GUILayout.Label("Registered commands: ");
-            foreach (Command.Command cmd in CmdHandler.getCommands()) {
-                GUILayout.Label("    " + cmd.key());
-            }
+            foreach (Command.Command cmd in CmdHandler.GetCommands()) GUILayout.Label("    " + cmd.Key());
         }
 
         private static void OnUpdate(UnityModManager.ModEntry arg1, float delta) {
-            if (NetworkServer.active != previousServerState) {
-                if (NetworkServer.active) {
+            if (NetworkServer.active != _previousServerState) {
+                if (NetworkServer.active)
                     NetHandler.StartServer();
-                } else {
+                else
                     NetHandler.StopServer();
-                }
 
-                previousServerState = NetworkServer.active;
+                _previousServerState = NetworkServer.active;
             }
 
-            if (timeout < 0) {
-                return;
-            }
+            if (_timeout < 0) return;
 
-            timeout -= delta;
-            lastCmd = null;
+            _timeout -= delta;
+            _lastCmd = null;
         }
 
         private static void ChatOnChatChanged(Console.Log log) {
             string cmd = log.message;
-            debug(cmd);
+            Debug(cmd);
 
             if (!GetDisplayNameFromLine(cmd, out string name)) {
-                debug($"Unable to find name from command");
+                Debug("Unable to find name from command");
                 return;
             }
 
-            debug("Fetching local player");
+            Debug("Fetching local player");
             string localPlayerName = UnityUtils.GetLocalNetworkUserName();
-            debug($"Local Player: {localPlayerName}, invoker: {name}");
-            if (!localPlayerName.Equals(name)) {
-                return;
-            }
+            Debug($"Local Player: {localPlayerName}, invoker: {name}");
+            if (!localPlayerName.Equals(name)) return;
 
-            if (cmd.Contains("ChatChanged")) {
-                return;
-            }
+            if (cmd.Contains("ChatChanged")) return;
 
-            while (cmd.Contains("<noparse>")) {
-                cmd = cmd.Replace("<noparse>", "");
-            }
+            while (cmd.Contains("<noparse>")) cmd = cmd.Replace("<noparse>", "");
 
-            while (cmd.Contains("</noparse>")) {
-                cmd = cmd.Replace("</noparse>", "");
-            }
+            while (cmd.Contains("</noparse>")) cmd = cmd.Replace("</noparse>", "");
 
-            if (!cmd.Contains("/")) {
-                return;
-            }
+            if (!cmd.Contains("/")) return;
 
             cmd = cmd.Split('/')[1];
 
-            while (cmd.Contains("<")) {
-                cmd = cmd.Replace("<", "");
-            }
+            while (cmd.Contains("<")) cmd = cmd.Replace("<", "");
 
-            while (cmd.Contains(">")) {
-                cmd = cmd.Replace(">", "");
-            }
+            while (cmd.Contains(">")) cmd = cmd.Replace(">", "");
 
-            if (cmd.Equals(lastCmd, StringComparison.OrdinalIgnoreCase)) {
-                return;
-            }
+            if (cmd.Equals(_lastCmd, StringComparison.OrdinalIgnoreCase)) return;
 
-            Mod.Logger.Log($"[ChatChanged] [{log.logType}] {cmd} (LastCmd: {lastCmd}");
-            debug(cmd);
+            Mod.Logger.Log($"[ChatChanged] [{log.logType}] {cmd} (LastCmd: {_lastCmd}");
+            Debug(cmd);
 
-            lastCmd = cmd;
-            timeout = .5f;
+            _lastCmd = cmd;
+            _timeout = .5f;
 
-            CmdHandler.invokeCommand(cmd);
+            CmdHandler.InvokeCommand(cmd);
         }
 
         private static bool GetDisplayNameFromLine(string line, out string displayName) {
-            // ReSharper disable once StringLiteralTypo
             if (line.Contains("noparse")) {
-                debug($"Potential command: {line}");
+                Debug($"Potential command: {line}");
                 Regex rx = new Regex(@"<noparse>([^<]*)</noparse>", RegexOptions.Compiled | RegexOptions.IgnoreCase);
                 MatchCollection matches = rx.Matches(line);
 
                 if (matches.Count >= 1) {
-                    debug("Match found");
+                    Debug("Match found");
                     Match match = matches[0];
-                    debug($"Groups: {match.Groups.Count}");
+                    Debug($"Groups: {match.Groups.Count}");
                     Group group = match.Groups[1];
-                    debug($"Group: {group.Value}");
+                    Debug($"Group: {group.Value}");
                     displayName = group.Value;
                     return true;
                 }
 
-                debug("No matches");
+                Debug("No matches");
             }
 
             displayName = "";
@@ -152,24 +132,22 @@ namespace Sandbox {
 
         private static bool Unload(UnityModManager.ModEntry arg) {
             Console.onLogReceived -= ChatOnChatChanged;
-            harmony.UnpatchAll();
+            _harmony.UnpatchAll();
             return true;
         }
 
         public static void Log(string msg, bool logToHud = false) {
             Mod.Logger.Log(msg);
-            if (logToHud) {
-                toHud(msg);
-            }
+            if (logToHud) ToHud(msg);
         }
 
-        public static void toHud(string msg) {
-            hudContainer.Add(msg);
+        public static void ToHud(string msg) {
+            _hudContainer.Add(msg);
         }
 
-        public static void debug(string msg) {
+        public static void Debug(string msg) {
             #if DEBUG
-            toHud(msg);
+            ToHud(msg);
             #endif
         }
     }

@@ -2,8 +2,10 @@ using System;
 using RoR2;
 using UnityEngine;
 
+// ReSharper disable UnusedMember.Global
+
 namespace Sandbox.Utilities {
-    public class UnityUtils {
+    public static class UnityUtils {
         public static bool RayTrace(out RaycastHit hit) {
             Camera camera = Camera.main;
 
@@ -40,7 +42,7 @@ namespace Sandbox.Utilities {
         public static PlayerCharacterMasterController GetPlayerController(
             Predicate<PlayerCharacterMasterController> filter) {
             foreach (PlayerCharacterMasterController ctrlr in PlayerCharacterMasterController.instances) {
-                SandboxMain.debug($"Player controller: {ctrlr.GetDisplayName()}, isLocal: {ctrlr.isLocalPlayer}");
+                SandboxMain.Debug($"Player controller: {ctrlr.GetDisplayName()}, isLocal: {ctrlr.isLocalPlayer}");
                 if (filter(ctrlr)) {
                     return ctrlr;
                 }
